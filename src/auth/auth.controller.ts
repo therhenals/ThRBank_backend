@@ -1,6 +1,8 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 //Swagger
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+//Firebase
+import { FirebaseUser, FirebaseUserClass } from 'src/firebase';
 //Services
 import { AuthService } from './auth.service';
 // Classes
@@ -16,5 +18,12 @@ export class AuthController {
     @Post('login')
     async login(@Body() loginDto: LoginDto): Promise<LoginClass> {
         return await this.authService.login(loginDto);
+    }
+
+    @Get('me')
+    async me(
+        @FirebaseUser() firebaseUser: FirebaseUserClass,
+    ) {
+        return await this.authService.me(firebaseUser);
     }
 }

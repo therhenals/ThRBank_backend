@@ -39,4 +39,11 @@ export class UsersService {
             throw new HttpException('Ocurrio un error', HttpStatus.FORBIDDEN);
         }
     }
+
+    async profile(uid: string) {
+        const client = await this.usersModel
+        .findById(uid)
+        .select(['-password']);
+      return client;
+    }
 }

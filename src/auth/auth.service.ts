@@ -6,6 +6,8 @@ import { UsersService } from 'src/users/users.service';
 import { DefaultRejectClass } from 'src/utils';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { LoginClass } from './classes/login.class';
+import { FirebaseUserClass } from 'src/firebase';
+import { ProfileClass } from 'src/users/classes/profile.class';
 //Dto
 import { LoginDto } from './dto/login.dto';
 //Libreries
@@ -41,16 +43,23 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<LoginClass> {
     try {
-      const store = await this.validate(loginDto.username, loginDto.password);
+      const user = await this.validate(loginDto.username, loginDto.password);
       const token = await this.firebaseAuthService.generateToken(
-        String(store._id),
+        String(user._id),
         {
-          name: `${store.firstName} ${store.lastName}`
+          name: `${user.firstName} ${user.lastName}`
         },
       );
       return { token };
     } catch (error) {
       throw new HttpException(error.message, error.code);
     }
+  }
+
+  async me(firebaseUser: FirebaseUserClass): Promise<ProfileClass> {
+    try {
+      const user = await this.usersService.profile(firebaseUser.uid)
+      return user;
+    } catch (error) { }
   }
 }
