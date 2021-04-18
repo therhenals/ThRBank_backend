@@ -6,6 +6,11 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
+// App modules
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { FirebaseModule } from './firebase/firebase.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,6 +26,9 @@ import { MongooseModule } from '@nestjs/mongoose';
         pass: process.env.MONGODB_PASSWORD
       },
     ),
+    UsersModule,
+    AuthModule,
+    FirebaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
