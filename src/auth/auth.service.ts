@@ -52,7 +52,7 @@ export class AuthService {
       );
       return { token };
     } catch (error) {
-      throw new HttpException(error.message, error.code);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }
 

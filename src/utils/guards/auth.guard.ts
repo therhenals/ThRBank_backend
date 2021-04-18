@@ -1,6 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { FirebaseAuthService } from 'src/firebase';
-import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class FirebaseGuard implements CanActivate {
