@@ -13,11 +13,6 @@ export class AccountsController {
         private accountsService: AccountsService
     ) { }
 
-    @Get('create-demo')
-    async createAccountsDemo() {
-        return await this.accountsService.createAccountsDemo();
-    }
-
     @Get('/all')
     async getAllAccounts(
         @FirebaseUser() firebaseUser: FirebaseUserClass,

@@ -11,16 +11,21 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
     constructor(@InjectModel('Users') private usersModel: Model<UserDocument>) { }
 
-    async createUserDemo(): Promise<void> {
+    async createUsersDemo(): Promise<UserDocument[]> {
         try {
             const salt = await bcrypt.genSalt();
-            const user = new this.usersModel({
-                username: 'demo',
+            const users: User[] = [{
+                username: 'luis',
                 password: await bcrypt.hash('demopass', salt),
                 firstName: 'Luis',
                 lastName: 'Rhenals'
-            } as User);
-            await user.save();
+            }, {
+                username: 'yomaris',
+                password: await bcrypt.hash('demopass2', salt),
+                firstName: 'Yomaris',
+                lastName: 'Castro'
+            }];
+            return this.usersModel.insertMany(users);
         } catch (error) {
             if (error.code == 11000) {
                 throw new HttpException(
