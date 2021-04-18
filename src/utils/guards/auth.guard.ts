@@ -5,9 +5,8 @@ import { Reflector } from '@nestjs/core';
 @Injectable()
 export class FirebaseGuard implements CanActivate {
   constructor(
-    private firebaseAuthService: FirebaseAuthService,
-    private reflector: Reflector,
-  ) {}
+    private firebaseAuthService: FirebaseAuthService
+  ) { }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     if (!request.headers.authorization) {
@@ -16,17 +15,8 @@ export class FirebaseGuard implements CanActivate {
     const result = await this.firebaseAuthService.verifyToken(
       request.headers.authorization,
     );
-    const types = this.reflector.get<string[]>('types', context.getHandler());
     if (result) {
-      if (types) {
-        if (types.includes(result.type)) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return true;
-      }
+      return true;
     } else {
       return false;
     }
