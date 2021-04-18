@@ -27,6 +27,11 @@ export class UsersService {
                     'Ya existe un usuario con este username',
                     HttpStatus.FORBIDDEN,
                 );
+            } else {
+                throw new HttpException(
+                    'Ha ocurrido un error',
+                    HttpStatus.FORBIDDEN,
+                );
             }
         }
     }
@@ -42,8 +47,8 @@ export class UsersService {
 
     async profile(uid: string) {
         const client = await this.usersModel
-        .findById(uid)
-        .select(['-password']);
-      return client;
+            .findById(uid)
+            .select(['-password']);
+        return client;
     }
 }

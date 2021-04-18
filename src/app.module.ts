@@ -10,6 +10,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { FirebaseModule } from './firebase/firebase.module';
     UsersModule,
     AuthModule,
     FirebaseModule,
+    AccountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
