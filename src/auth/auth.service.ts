@@ -11,7 +11,7 @@ import { ProfileClass } from 'src/users/classes/profile.class';
 //Dto
 import { LoginDto } from './dto/login.dto';
 //Libreries
-import { compare } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +24,7 @@ export class AuthService {
     return new Promise(async (resolve, reject) => {
       try {
         const user = await this.usersService.findOne(username);
-        if (await compare(password, user.password)) {
+        if (await bcrypt.compare(password, user.password)) {
           resolve(user);
         } else {
           reject({

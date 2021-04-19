@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 //Swagger
 import { ApiTags } from '@nestjs/swagger';
 //Firebase
@@ -18,5 +18,13 @@ export class AccountsController {
         @FirebaseUser() firebaseUser: FirebaseUserClass,
     ) {
         return await this.accountsService.getAllAccounts(firebaseUser.uid);
+    }
+
+    @Get('/:number')
+    async getByNumber(
+        @FirebaseUser() firebaseUser: FirebaseUserClass,
+        @Param('number') number: number
+    ) {
+        return await this.accountsService.findAccountByUserAndNumber(firebaseUser.uid, number);
     }
 }

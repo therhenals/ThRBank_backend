@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { ThirdPartyAccountsModule } from './third-party-accounts/third-party-accounts.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     FirebaseModule,
     AccountsModule,
     TransactionsModule,
+    ThirdPartyAccountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get, Query } from '@nestjs/common';
 //Swagger
 import { ApiTags } from '@nestjs/swagger';
 //Firebase
@@ -9,6 +9,7 @@ import { TransactionsService } from './transactions.service';
 //Classes
 //Dto
 import { CreateTransferDto } from './dto/create-transfer.dto';
+import { GetAllDto } from './dto/get-all.dto';
 
 @ApiTags('transactions')
 @Controller('transactions')
@@ -24,5 +25,12 @@ export class TransactionsController {
             firebaseUser.uid,
             createTransfer
         );
+    }
+
+    @Get('all')
+    async getAll(
+        @Query() getAll: GetAllDto
+    ) {
+        return await this.transactionsService.getAll(getAll);
     }
 }

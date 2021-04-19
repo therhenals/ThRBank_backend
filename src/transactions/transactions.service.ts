@@ -9,6 +9,7 @@ import { Transaction, TransactionDocument } from './schemas/transaction.schema';
 //Dto
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { CreateTransferDto } from './dto/create-transfer.dto';
+import { GetAllDto } from './dto/get-all.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -73,18 +74,37 @@ export class TransactionsService {
     async createTransfer(userId: string, createTransfer: CreateTransferDto): Promise<void> {
         try {
             const senderAccount = await this.accountsService.findAccountByUserAndNumber(userId, createTransfer.senderAccount);
-            if (senderAccount) {
+            if (!senderAccount) {
                 throw new HttpException(
                     'Esta cuenta no te pertenece',
                     HttpStatus.FORBIDDEN,
                 );
+            } else {
+                if (senderAccount.balance < createTransfer.amount) {
+                    throw new HttpException(
+                        'No tienes dinero suficiente',
+                        HttpStatus.FORBIDDEN,
+                    );
+                }
             }
             await this.createTransaction({
                 amount: createTransfer.amount,
-                destinationAccount: createTransfer.amount,
+                destinationAccount: createTransfer.destinationAccount,
                 senderAccount: createTransfer.senderAccount,
                 type: 'transferencia'
             })
+        } catch (error) {
+            throw new HttpException(
+                error.message,
+                HttpStatus.FORBIDDEN,
+            );
+        }
+    }
+
+    async getAll(getAllDto: GetAllDto): Promise<TransactionDocument[]> {
+        try {
+            const transactions = await this.transactionModel.find({ $or: [{ destinationAccount: getAllDto.numberAccount }, { senderAccount: getAllDto.numberAccount }] })
+            return transactions;
         } catch (error) {
             throw new HttpException(
                 'Ha ocurrio un error',
